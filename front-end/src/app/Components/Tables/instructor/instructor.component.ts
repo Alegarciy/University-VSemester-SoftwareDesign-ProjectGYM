@@ -36,10 +36,15 @@ export class InstructorComponent implements OnInit {
     this.instructorService
       .getRegisteredInstructors()
       .subscribe((instructorList: [Instructor]) => {
+        console.log(instructorList);
         this.instructor = [];
         instructorList.forEach((instructor: any, key: any) => {
-          if (this.columnContent.length == 0)
+          if (this.columnContent.length == 0) {
+            delete instructor.services;
             this.columnContent = Object.keys(instructor);
+            let indexService = this.columnContent.indexOf("services");
+            console.log(indexService);
+          }
           this.instructor.push(instructor);
         });
         if (!this.isButtonsLoaded) {
@@ -57,6 +62,20 @@ export class InstructorComponent implements OnInit {
     this.instructorService.deleteInstructor(instructor).subscribe(
       (res) => {
         this.loadInstructors();
+        console.log(res);
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+  }
+
+  // TODO: implement dialogue
+  onDetails(instructorJSON: any) {
+    let instructor = this.initInstructor(instructorJSON);
+    console.log(instructor);
+    this.instructorService.getInstructorDetails(instructor).subscribe(
+      (res) => {
         console.log(res);
       },
       (err) => {
