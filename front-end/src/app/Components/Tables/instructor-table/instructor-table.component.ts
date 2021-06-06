@@ -15,6 +15,8 @@ export class InstructorTableComponent implements OnInit {
   columnContent!: any;
   @Output()
   instructorDeleted = new EventEmitter<any>();
+  @Output()
+  instructorDetails = new EventEmitter<any>();
 
   constructor() {}
 
@@ -22,6 +24,10 @@ export class InstructorTableComponent implements OnInit {
 
   onDelete(instructor: Instructor) {
     this.instructorDeleted.emit(instructor);
+  }
+
+  onDetails(instructor: Instructor) {
+    this.instructorDetails.emit(instructor);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
