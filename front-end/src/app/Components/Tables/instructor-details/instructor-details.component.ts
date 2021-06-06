@@ -18,6 +18,8 @@ import { InstructorsService } from "src/app/Services/UserInfo/instructors.servic
 export class InstructorDetailsComponent implements OnInit {
   instructor: Instructor;
   serviceListString: string;
+  serviceArray: Array<Service> = [];
+  serviceId = 0;
 
   constructor(
     private servicesService: ServicesService,
@@ -30,6 +32,7 @@ export class InstructorDetailsComponent implements OnInit {
     console.log("Instructor Recibido");
     console.log(this.instructor);
     this.loadServiceString();
+    this.loadServicesTypes();
   }
 
   ngOnInit(): void {}
@@ -38,5 +41,23 @@ export class InstructorDetailsComponent implements OnInit {
     this.instructor.services?.forEach((service: Service) => {
       this.serviceListString += service.name + ",";
     });
+  }
+
+  loadServicesTypes() {
+    this.servicesService
+      .getServicesTypes()
+      .subscribe((serviceTypesList: [Service]) => {
+        serviceTypesList.forEach((serviceType: any, key: any) => {
+          console.log("SERVICEEE");
+          console.log(serviceType);
+          this.serviceArray.push(serviceType);
+        });
+      });
+  }
+
+  addService() {
+    console.log("Service added");
+    console.log(this.instructor.id);
+    console.log(this.serviceId);
   }
 }
