@@ -130,3 +130,23 @@ func GetConnection() *sql.DB {
 func CheckHealth() error {
 	return GetConnection().Ping()
 }
+
+// QueryFunction executes a PostgreSQL function and returns the result
+func QueryFunction(query string, args ...interface{}) (*sql.Rows, error) {
+	db := GetConnection()
+	if db == nil {
+		return nil, fmt.Errorf("database connection is nil")
+	}
+	
+	return db.Query(query, args...)
+}
+
+// QueryFunctionRow executes a PostgreSQL function and returns a single row
+func QueryFunctionRow(query string, args ...interface{}) *sql.Row {
+	db := GetConnection()
+	if db == nil {
+		return nil
+	}
+	
+	return db.QueryRow(query, args...)
+}

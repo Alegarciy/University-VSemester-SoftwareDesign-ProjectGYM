@@ -13,29 +13,22 @@ import (
 )
 
 func ParseLoginResponse(resultSet *sql.Rows) Models.Login {
-
-	var id int
-	var username string
-	var password string
-	var userType int
-
+	var user Models.Login
+	
 	if !resultSet.Next() {
 		return Models.Login{}
 	}
-
-	if err := resultSet.Scan(&id, &username, &password, &userType); err != nil {
-		fmt.Println(err.Error())
-
+	
+	if err := resultSet.Scan(
+		&user.Identifier,
+		&user.Username,
+		&user.Password,
+		&user.Type,
+	); err != nil {
+		fmt.Printf("Error scanning login response: %v\n", err)
 		return Models.Login{}
 	}
-
-	user := Models.Login{
-		Identifier: id,
-		Username:   username,
-		Type:       userType,
-		Password:   password,
-	}
-
+	
 	return user
 }
 

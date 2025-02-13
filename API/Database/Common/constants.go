@@ -13,4 +13,9 @@ const (
 	UnknownErrorMessage = "unknown error occurred"
 
 	MinimalSuccessfulReturnCode = 1
+
+	// Database errors
+	ErrDatabaseConnection = "database connection error"
+	ErrUserNotFound      = "user not found"
+	ErrQueryExecution    = "error executing query"
 )

@@ -4,20 +4,32 @@ import (
 	"API/Database"
 	"API/Database/Common"
 	"API/Models"
+	"database/sql"
 	"fmt"
 )
 
 func GetLogin(pUsername string) (Models.Login, bool) {
-
-	query := fmt.Sprintf(`EXEC SP_GetUserByUsername '%s';`, pUsername)
-
-	resultSet, err := Database.ReadTransaction(query)
-
+	db := Database.GetConnection()
+	
+	// Query the function
+	row := db.QueryRow("SELECT * FROM FN_GetUserByUsername($1)", pUsername)
+	
+	var user Models.Login
+	err := row.Scan(
+		&user.Identifier,  // This is already correctly an int
+		&user.Username,
+		&user.Password,    // Note: This will be hidden in JSON due to the `json:"-"` tag
+		&user.Type,
+	)
+	
 	if err != nil {
+		if err == sql.ErrNoRows {
+			return Models.Login{}, false
+		}
+		fmt.Printf("Error scanning user: %v\n", err)
 		return Models.Login{}, false
 	}
-
-	user := ParseLoginResponse(resultSet)
+	
 	return user, true
 }
 

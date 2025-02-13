@@ -1,5 +1,5 @@
 -- =============================================
--- Author:		Eduardo Madrigal Marin
+-- Author:		Alejandro Garcia Bejarano
 -- Description:	Adds a service to an instructor (PostgreSQL version)
 -- =============================================
 
