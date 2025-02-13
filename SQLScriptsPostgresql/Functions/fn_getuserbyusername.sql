@@ -1,5 +1,10 @@
--- Make sure this runs after table creation
-CREATE OR REPLACE FUNCTION fn_getuserbyusername(
+-- =============================================
+-- Author:      Jorge Gutiérrez Cordero (PostgreSQL adaptation)
+-- Create Date: Current
+-- Description: Gets a user by its username
+-- =============================================
+
+CREATE OR REPLACE FUNCTION FN_GetUserByUsername(
     p_username VARCHAR(20)
 ) RETURNS TABLE (
     unique_identifier INT,
@@ -21,4 +26,7 @@ BEGIN
         usr.username = p_username
         AND usr.active = true;
 END;
-$$ LANGUAGE plpgsql; 
+$$ LANGUAGE plpgsql;
+
+-- Example usage:
+-- SELECT * FROM FN_GetUserByUsername('Cliente1'); 

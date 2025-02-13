@@ -113,7 +113,7 @@ INSERT INTO especialidadesdeinstructores (instructorid, especialidadid) VALUES
 
 -- Sesion Preliminar
 INSERT INTO sesionpreliminar 
-    (nombre, diasemana, mes, anio, horainicio, duracionminutos, cupo, especialidadid, salaid, instructorid) 
+    (nombre, diasemana, mes, año, horainicio, duracionminutos, cupo, especialidadid, salaid, instructorid) 
 VALUES 
     ('Sesion de Yoga', 1, 8, 2021, '08:00', 120, 12, 1, 1, 1),
     ('Sesion de Funcional', 1, 8, 2021, '09:30', 120, 12, 2, 1, 2),
@@ -172,7 +172,7 @@ INSERT INTO premios (nombre, estrellasnecesarias) VALUES
     ('Sesión de de Descarga Muscular', 3);
 
 -- Estrellas Mensuales
-INSERT INTO estrellasmensuales (clienteid, anio, mes, semanadelmes , cantidad) VALUES
+INSERT INTO estrellasmensuales (clienteid, año, mes, semanadelmes , cantidad) VALUES
     (1, 2020, 1, 1, 3),
     (1, 2020, 1, 2, 3),
     (1, 2020, 1, 3, 1),
@@ -183,7 +183,7 @@ INSERT INTO estrellasmensuales (clienteid, anio, mes, semanadelmes , cantidad) V
     (1, 2020, 2, 4, 3);
 
 -- Premios Por Cliente
-INSERT INTO premiosporcliente (clienteid, premioid, mes, anio) VALUES
+INSERT INTO premiosporcliente (clienteid, premioid, mes, año) VALUES
     (1, 1, 1, 2020),
     (2, 4, 1, 2020);
 

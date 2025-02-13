@@ -15,7 +15,20 @@ BEGIN
     -- END IF;
 END $$;
 
--- Tables will be created here (converted from Drop&Create.sql)
+-- Then load db setup 
+\i /docker-entrypoint-initdb.d/Setup/01_tables.sql
+\i /docker-entrypoint-initdb.d/Setup/02_errors.sql
+\i /docker-entrypoint-initdb.d/Setup/03_mockdata.sql
+
+-- Then load views
+\i /docker-entrypoint-initdb.d/Views/VW_CompleteInstructors.sql
+\i /docker-entrypoint-initdb.d/Views/VW_CompleteSessions.sql
+\i /docker-entrypoint-initdb.d/Views/VW_CompleteUsers.sql
+\i /docker-entrypoint-initdb.d/Views/VW_SessionAttendances.sql
+
+-- Then load functions
+\i /docker-entrypoint-initdb.d/Functions/FN_GetUserByUsername.sql
+\i /docker-entrypoint-initdb.d/Functions/FN_AddServiceToInstructor.sql
 
 -- Error handling tables will be created here (converted from ErrorsDrop&Create.sql)
 
@@ -29,6 +42,10 @@ END $$;
 -- 02_functions.sql
 -- 03_data.sql
 
--- Then load functions
+-- Then load db setup 
 \i /docker-entrypoint-initdb.d/Setup/01_tables.sql
+
+-- Then load functions
+\i /docker-entrypoint-initdb.d/Functions/FN_GetUserByUsername.sql
+\i /docker-entrypoint-initdb.d/Functions/FN_AddServiceToInstructor.sql
 
