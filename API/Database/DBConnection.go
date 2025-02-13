@@ -85,3 +85,16 @@ func VoidTransaction(pQuery string) (mssql.ReturnStatus, error) {
 
 	return returnStatus, nil
 }
+
+// CheckHealth verifies database connectivity and returns error if connection fails
+func CheckHealth() error {
+	connect()
+	defer db.Close()
+
+	ctx := context.Background()
+	err := db.PingContext(ctx)
+	if err != nil {
+		return fmt.Errorf("database connection failed: %v", err)
+	}
+	return nil
+}

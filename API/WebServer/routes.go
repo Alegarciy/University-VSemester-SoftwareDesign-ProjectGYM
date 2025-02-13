@@ -2,11 +2,14 @@ package WebServer
 
 import (
 	"API/WebServer/Controllers"
-
 	"github.com/gofiber/fiber/v2"
 )
 
 func Setup(app *fiber.App) {
+	// Monitoring endpoints
+	monitoring := app.Group("/monitoring")
+	monitoring.Get("/health/api", Controllers.APIHealthCheck)
+	monitoring.Get("/health/database", Controllers.DatabaseHealthCheck)
 
 	client := app.Group("/client")
 	client.Post("/clients", Controllers.GetClients)
