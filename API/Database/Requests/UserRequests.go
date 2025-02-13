@@ -18,7 +18,7 @@ func GetLogin(pUsername string) (Models.Login, bool) {
 	err := row.Scan(
 		&user.Identifier,  // This is already correctly an int
 		&user.Username,
-		&user.Password,    // Note: This will be hidden in JSON due to the `json:"-"` tag
+		&user.Password,
 		&user.Type,
 	)
 	
