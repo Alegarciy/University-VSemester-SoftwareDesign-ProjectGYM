@@ -15,12 +15,15 @@ func APIHealthCheck(c *fiber.Ctx) error {
 
 // DatabaseHealthCheck handles the database health check endpoint request
 func DatabaseHealthCheck(c *fiber.Ctx) error {
-	dbErr := Database.CheckHealth()
+	db := Database.GetConnection()
+	
+	// Simple ping to check if database is alive
+	err := db.Ping()
 	
 	status := "healthy"
 	statusCode := 200
 	
-	if dbErr != nil {
+	if err != nil {
 		status = "unhealthy"
 		statusCode = 503 // Service Unavailable
 	}
@@ -28,6 +31,6 @@ func DatabaseHealthCheck(c *fiber.Ctx) error {
 	return c.Status(statusCode).JSON(fiber.Map{
 		"status": status,
 		"service": "database",
-		"error": dbErr,
+		"error": err,
 	})
 } 

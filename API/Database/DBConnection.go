@@ -5,11 +5,17 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+	"os"
+	"sync"
 
 	mssql "github.com/denisenkom/go-mssqldb"
+	_ "github.com/lib/pq"
 )
 
-var db *sql.DB
+var (
+	db   *sql.DB
+	once sync.Once
+)
 
 var server = "carrera.database.windows.net"
 var port = 1433
@@ -86,15 +92,41 @@ func VoidTransaction(pQuery string) (mssql.ReturnStatus, error) {
 	return returnStatus, nil
 }
 
-// CheckHealth verifies database connectivity and returns error if connection fails
-func CheckHealth() error {
-	connect()
-	defer db.Close()
+// GetConnection returns a singleton instance of the database connection
+func GetConnection() *sql.DB {
+	once.Do(func() {
+		var err error
+		
+		// Get connection details from environment variables - match docker-compose.yml names
+		host := os.Getenv("DB_HOST")
+		port := os.Getenv("DB_PORT")
+		user := os.Getenv("DB_USER")
+		password := os.Getenv("DB_PASSWORD")
+		dbname := os.Getenv("DB_NAME")
+		
+		// Create connection string
+		connStr := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
+			host, port, user, password, dbname)
+		
+		log.Printf("Attempting to connect to database with: host=%s port=%s dbname=%s user=%s", 
+			host, port, dbname, user) // Add logging to help debug
+		
+		// Open database connection
+		db, err = sql.Open("postgres", connStr)
+		if err != nil {
+			log.Printf("Error opening database connection: %v", err)
+			panic(err)
+		}
+		
+		// Set connection pool settings
+		db.SetMaxOpenConns(25)
+		db.SetMaxIdleConns(25)
+	})
+	
+	return db
+}
 
-	ctx := context.Background()
-	err := db.PingContext(ctx)
-	if err != nil {
-		return fmt.Errorf("database connection failed: %v", err)
-	}
-	return nil
+// CheckHealth pings the database to check if it's alive
+func CheckHealth() error {
+	return GetConnection().Ping()
 }

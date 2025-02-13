@@ -7,4 +7,5 @@ require (
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/gofiber/fiber/v2 v2.8.0
 	github.com/golang-sql/civil v0.0.0-20190719163853-cb61b32ac6fe
+	github.com/lib/pq v1.10.9
 )
