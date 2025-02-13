@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  # Go API
+  api:
+    build:
+      context: ./API
+      dockerfile: Dockerfile
+    ports:
+      - '5000:5000'
+    volumes:
+      - ./API:/app
+      - sqlite_data:/app/data
+    networks:
+      - app-network
+
+  # Angular Frontend
+  frontend:
+    build:
+      context: ./front-end
+      dockerfile: Dockerfile
+    ports:
+      - '4200:4200'
+    volumes:
+      - ./front-end:/app
+      - /app/node_modules
+    environment:
+      - API_URL=http://localhost:5000
+    depends_on:
+      - api
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  sqlite_data:
