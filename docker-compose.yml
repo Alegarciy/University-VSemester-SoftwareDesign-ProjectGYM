@@ -12,7 +12,9 @@ services:
       - '5432:5432'
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./SQLScriptsPostgresql:/docker-entrypoint-initdb.d
+      - ./SQLScriptsPostgresql/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./SQLScriptsPostgresql/Setup:/docker-entrypoint-initdb.d/Setup
+      - ./SQLScriptsPostgresql/Functions:/docker-entrypoint-initdb.d/Functions
     networks:
       - plusgym-network
 

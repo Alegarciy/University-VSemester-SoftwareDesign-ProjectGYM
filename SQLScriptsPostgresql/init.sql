@@ -27,4 +27,8 @@ END $$;
 -- We can ensure order by prefixing files with numbers:
 -- 01_tables.sql
 -- 02_functions.sql
--- 03_data.sql 
+-- 03_data.sql
+
+-- Then load functions
+\i /docker-entrypoint-initdb.d/Setup/01_tables.sql
+
