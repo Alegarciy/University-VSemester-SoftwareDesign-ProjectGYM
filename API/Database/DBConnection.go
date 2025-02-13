@@ -1,60 +1,39 @@
 package Database
 
 import (
+	"context"
 	"database/sql"
-	_ "github.com/mattn/go-sqlite3"
+	"fmt"
 	"log"
-	"os"
-	"path/filepath"
+
+	mssql "github.com/denisenkom/go-mssqldb"
 )
 
 var db *sql.DB
 
+var server = "carrera.database.windows.net"
+var port = 1433
+var user = "trabajadorResponsable"
+var password = "1231!#ASDF!a"
+var database = "PlusGymProject"
+
 func connect() {
-	// Ensure data directory exists
-	dataDir := "./data"
-	if err := os.MkdirAll(dataDir, 0755); err != nil {
-		log.Fatal("Error creating data directory:", err)
-	}
+	// Build connection string
+	connString := fmt.Sprintf("server=%s;user id=%s;password=%s;port=%d;database=%s;",
+		server, user, password, port, database)
 
-	dbPath := filepath.Join(dataDir, "plusgym.db")
-	
 	var err error
-	db, err = sql.Open("sqlite3", dbPath)
+
+	// Create connection pool
+	db, err = sql.Open("sqlserver", connString)
+
 	if err != nil {
-		log.Fatal("Error opening database:", err)
+		log.Fatal("Error creating connection pool: ", err.Error())
 	}
-
-	// Test the connection
-	err = db.Ping()
+	ctx := context.Background()
+	err = db.PingContext(ctx)
 	if err != nil {
-		log.Fatal("Error connecting to database:", err)
-	}
-
-	// Initialize database schema
-	initializeDatabase()
-}
-
-func initializeDatabase() {
-	// Read and execute schema creation scripts
-	schemaSQL := `
-	-- Add your schema creation SQL here
-	-- Convert your MSSQL schema to SQLite syntax
-	CREATE TABLE IF NOT EXISTS Cliente (
-		Id INTEGER PRIMARY KEY AUTOINCREMENT,
-		Nombre TEXT NOT NULL,
-		Correo TEXT UNIQUE NOT NULL,
-		Celular TEXT,
-		Cedula TEXT UNIQUE NOT NULL,
-		Saldo REAL DEFAULT 0,
-		Active INTEGER DEFAULT 1
-	);
-	-- Add other table creation statements
-	`
-
-	_, err := db.Exec(schemaSQL)
-	if err != nil {
-		log.Fatal("Error initializing database schema:", err)
+		log.Fatal(err.Error())
 	}
 }
 
@@ -62,8 +41,15 @@ func ReadTransaction(pQuery string) (*sql.Rows, error) {
 	connect()
 	defer db.Close()
 
+	ctx := context.Background()
+	// Check if database is alive.
+	err := db.PingContext(ctx)
+	if err != nil {
+		return nil, err
+	}
+
 	// Execute query
-	rows, err := db.Query(pQuery)
+	rows, err := db.QueryContext(ctx, pQuery)
 	if err != nil {
 		return nil, err
 	}
@@ -71,15 +57,31 @@ func ReadTransaction(pQuery string) (*sql.Rows, error) {
 	return rows, nil
 }
 
-func VoidTransaction(pQuery string) (int64, error) {
+func VoidTransaction(pQuery string) (mssql.ReturnStatus, error) {
 	connect()
 	defer db.Close()
 
-	// Execute query
-	result, err := db.Exec(pQuery)
+	ctx := context.Background()
+
+	var returnStatus mssql.ReturnStatus
+
+	// Check if database is alive.
+	err := db.PingContext(ctx)
+
 	if err != nil {
-		return -1, err
+		returnStatus = -1
+		println(err.Error())
+		return returnStatus, err
 	}
 
-	return result.LastInsertId()
+	// Execute query
+	_, err = db.ExecContext(ctx, pQuery, &returnStatus)
+
+	if err != nil {
+		returnStatus = -1
+		println(err.Error())
+		return returnStatus, err
+	}
+
+	return returnStatus, nil
 }
