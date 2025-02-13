@@ -13,7 +13,7 @@ services:
       - sqlserver_data:/var/opt/mssql
       - ./SQLScripts:/docker-entrypoint-initdb.d
     networks:
-      - app-network
+      - plusgym-network
 
   # Go API
   api:
@@ -31,7 +31,7 @@ services:
       - DB_PASSWORD=YourStrong!Passw0rd
       - DB_NAME=PlusGymProject
     networks:
-      - app-network
+      - plusgym-network
 
   # Angular Frontend
   frontend:
@@ -48,10 +48,11 @@ services:
     depends_on:
       - api
     networks:
-      - app-network
+      - plusgym-network
 
 networks:
-  app-network:
+  plusgym-network:
+    name: plusgym-network
     driver: bridge
 
 volumes:
