@@ -1,16 +1,17 @@
 version: '3.8'
 
 services:
-  # SQL Server
+  # PostgreSQL
   db:
-    image: mcr.microsoft.com/mssql/server:2019-latest
+    image: postgres:15
     environment:
-      - ACCEPT_EULA=Y
-      - SA_PASSWORD=YourStrong!Passw0rd
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=YourStrong!Passw0rd
+      - POSTGRES_DB=PlusGymProject
     ports:
-      - '1433:1433'
+      - '5432:5432'
     volumes:
-      - sqlserver_data:/var/opt/mssql
+      - postgres_data:/var/lib/postgresql/data
       - ./SQLScripts:/docker-entrypoint-initdb.d
     networks:
       - plusgym-network
@@ -26,8 +27,8 @@ services:
       - db
     environment:
       - DB_HOST=db
-      - DB_PORT=1433
-      - DB_USER=sa
+      - DB_PORT=5432
+      - DB_USER=postgres
       - DB_PASSWORD=YourStrong!Passw0rd
       - DB_NAME=PlusGymProject
     networks:
@@ -56,4 +57,4 @@ networks:
     driver: bridge
 
 volumes:
-  sqlserver_data:
+  postgres_data:
