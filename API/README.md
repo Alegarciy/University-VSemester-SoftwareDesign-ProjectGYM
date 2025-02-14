@@ -19,7 +19,7 @@ curl -X POST http://localhost:5000/user/login \
      -H "Content-Type: application/json" \
      -d '{
            "username": "Cliente1",
-           "password": "yourpassword"
+           "password": "1234"
          }'
 ```
 
