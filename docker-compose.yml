@@ -15,6 +15,7 @@ services:
       - ./SQLScriptsPostgresql/init.sql:/docker-entrypoint-initdb.d/init.sql
       - ./SQLScriptsPostgresql/Setup:/docker-entrypoint-initdb.d/Setup
       - ./SQLScriptsPostgresql/Functions:/docker-entrypoint-initdb.d/Functions
+      - ./SQLScriptsPostgresql/Views:/docker-entrypoint-initdb.d/Views
     networks:
       - plusgym-network
 

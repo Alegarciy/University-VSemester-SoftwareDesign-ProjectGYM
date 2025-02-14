@@ -67,14 +67,16 @@ CREATE TABLE DiaDeAtencion (
     SalaId INTEGER REFERENCES Sala(Id),
     HoraApertura TIME NOT NULL,
     HoraCierre TIME NOT NULL,
-    DiaSemana INTEGER NOT NULL
+    DiaSemana INTEGER NOT NULL,
+    Active BOOLEAN DEFAULT TRUE
 );
 
 CREATE TABLE Usuario (
     Id SERIAL PRIMARY KEY,
     Username VARCHAR(100) NOT NULL UNIQUE,
     Password VARCHAR(100) NOT NULL,
-    TipoUsuario INTEGER REFERENCES TipoUsuario(Id)
+    TipoUsuario INTEGER REFERENCES TipoUsuario(Id),
+    Activo BOOLEAN DEFAULT TRUE
 );
 
 CREATE TABLE Administrador (
@@ -93,7 +95,8 @@ CREATE TABLE Cliente (
     Nombre VARCHAR(100) NOT NULL,
     Correo VARCHAR(100) NOT NULL,
     Celular VARCHAR(20) NOT NULL,
-    Saldo DECIMAL(10,2) DEFAULT 0
+    Saldo DECIMAL(10,2) DEFAULT 0,
+    Active BOOLEAN DEFAULT TRUE
 );
 
 CREATE TABLE Notificaciones (
@@ -101,7 +104,8 @@ CREATE TABLE Notificaciones (
     Message TEXT NOT NULL,
     Date DATE NOT NULL,
     Time TIME NOT NULL,
-    ClienteId INTEGER REFERENCES Cliente(Id)
+    ClienteId INTEGER REFERENCES Cliente(Id),
+    Active BOOLEAN DEFAULT TRUE
 );
 
 CREATE TABLE UsuarioCliente (
@@ -127,13 +131,15 @@ CREATE TABLE Especialidades (
     Id SERIAL PRIMARY KEY,
     Nombre VARCHAR(100) NOT NULL,
     Aforo INTEGER NOT NULL,
-    Costo DECIMAL(10,2) NOT NULL
+    Costo DECIMAL(10,2) NOT NULL,
+    Activa BOOLEAN DEFAULT TRUE
 );
 
 CREATE TABLE ServiciosFavoritos (
     Id SERIAL PRIMARY KEY,
     ClienteId INTEGER REFERENCES Cliente(Id),
-    EspecialidadId INTEGER REFERENCES Especialidades(Id)
+    EspecialidadId INTEGER REFERENCES Especialidades(Id),
+    Active BOOLEAN DEFAULT TRUE
 );
 
 CREATE TABLE Instructor (
@@ -141,7 +147,8 @@ CREATE TABLE Instructor (
     Nombre VARCHAR(100) NOT NULL,
     Cedula VARCHAR(20) NOT NULL UNIQUE,
     Correo VARCHAR(100) NOT NULL,
-    Tipo INTEGER REFERENCES TipoInstructor(Id)
+    Tipo INTEGER REFERENCES TipoInstructor(Id),
+    Activo BOOLEAN DEFAULT TRUE
 );
 
 CREATE TABLE EspecialidadesDeInstructores (
@@ -162,6 +169,7 @@ CREATE TABLE SesionPreliminar (
     EspecialidadId INTEGER REFERENCES Especialidades(Id),
     SalaId INTEGER REFERENCES Sala(Id),
     InstructorId INTEGER REFERENCES Instructor(Id),
+    Activa BOOLEAN DEFAULT TRUE,
     Confirmada BOOLEAN DEFAULT FALSE
 );
 
@@ -170,7 +178,9 @@ CREATE TABLE Sesion (
     Fecha DATE NOT NULL,
     Costo DECIMAL(10,2) NOT NULL,
     InstructorId INTEGER REFERENCES Instructor(Id),
-    SessionPreliminarId INTEGER REFERENCES SesionPreliminar(Id)
+    SessionPreliminarId INTEGER REFERENCES SesionPreliminar(Id),
+    Cancelada BOOLEAN DEFAULT FALSE,
+    AsistenciaTomada BOOLEAN DEFAULT FALSE
 );
 
 CREATE TABLE Reserva (
@@ -178,7 +188,8 @@ CREATE TABLE Reserva (
     FechaReserva TIMESTAMP NOT NULL,
     ClienteId INTEGER REFERENCES Cliente(Id),
     SesionId INTEGER REFERENCES Sesion(Id),
-    Activa BOOLEAN DEFAULT TRUE
+    Activa BOOLEAN DEFAULT TRUE,
+    Asistencia BOOLEAN DEFAULT FALSE
 );
 
 CREATE TABLE Premios (

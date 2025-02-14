@@ -21,31 +21,8 @@ END $$;
 \i /docker-entrypoint-initdb.d/Setup/03_mockdata.sql
 
 -- Then load views
-\i /docker-entrypoint-initdb.d/Views/VW_CompleteInstructors.sql
-\i /docker-entrypoint-initdb.d/Views/VW_CompleteSessions.sql
 \i /docker-entrypoint-initdb.d/Views/VW_CompleteUsers.sql
-\i /docker-entrypoint-initdb.d/Views/VW_SessionAttendances.sql
 
 -- Then load functions
 \i /docker-entrypoint-initdb.d/Functions/FN_GetUserByUsername.sql
 \i /docker-entrypoint-initdb.d/Functions/FN_AddServiceToInstructor.sql
-
--- Error handling tables will be created here (converted from ErrorsDrop&Create.sql)
-
--- Data insertion will happen here (converted from DataInsertion.sql)
-
--- Note: All statements should end with semicolons in PostgreSQL
-
--- By default, PostgreSQL will execute scripts in alphabetical order from /docker-entrypoint-initdb.d
--- We can ensure order by prefixing files with numbers:
--- 01_tables.sql
--- 02_functions.sql
--- 03_data.sql
-
--- Then load db setup 
-\i /docker-entrypoint-initdb.d/Setup/01_tables.sql
-
--- Then load functions
-\i /docker-entrypoint-initdb.d/Functions/FN_GetUserByUsername.sql
-\i /docker-entrypoint-initdb.d/Functions/FN_AddServiceToInstructor.sql
-
