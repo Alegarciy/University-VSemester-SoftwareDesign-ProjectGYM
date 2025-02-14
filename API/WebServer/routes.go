@@ -20,18 +20,18 @@ func Setup(app *fiber.App) {
 	client.Post("/insertCredit", Controllers.InsertCreditMovement)
 
 	// ? Aqui esta bien o mejor hacer otra seccion?
-	client.Post("/sessionParticipants", Controllers.GetSessionParticipants) // New!
-	client.Get("/notifyPrizes", Controllers.NotifyPrizes)                   // New!
-	client.Post("/monthlyPrizes", Controllers.GetMonthlyPrizes)             // New!
+	client.Post("/sessionParticipants", Controllers.GetSessionParticipants)
+	client.Get("/notifyPrizes", Controllers.NotifyPrizes)
+	client.Post("/monthlyPrizes", Controllers.GetMonthlyPrizes)
 	client.Post("/awardPrizes", Controllers.AwardPrizes)
 	//client.Post("/monthlyStars", Controllers.GetClientMonthlyStars)
 	client.Post("/getNotifications", Controllers.GetNotifications)
 
 	//TODO: discuss in which group this request has to be categorized
-	client.Get("/paymentMethods", Controllers.GetPaymentMethods) // ? Not in services
+	client.Get("/paymentMethods", Controllers.GetPaymentMethods)
 
 	user := app.Group("/user")
-	user.Post("/login", Controllers.Login)
+	user.Post("/login", Controllers.Login) // Updated!!
 	user.Post("/deactivateAccount", Controllers.DeactivateAccount)
 	user.Post("/registerClientUser", Controllers.RegisterClientUser)
 	user.Post("/updateUserDetails", Controllers.UpdateUserDetails)
@@ -43,9 +43,9 @@ func Setup(app *fiber.App) {
 	services.Post("/setMaxSpaces", Controllers.SetServiceMaxSpace)
 
 	// Todo bien eduardo asi esta perfecto 💯
-	services.Post("/favoriteServices", Controllers.GetFavoriteServices)        // NEW!
-	services.Post("/addFavoriteService", Controllers.AddFavoriteService)       // New!
-	services.Post("/removeFavoriteService", Controllers.RemoveFavoriteService) // New!
+	services.Post("/favoriteServices", Controllers.GetFavoriteServices)
+	services.Post("/addFavoriteService", Controllers.AddFavoriteService)
+	services.Post("/removeFavoriteService", Controllers.RemoveFavoriteService)
 
 	sessions := app.Group("/sessions")
 	sessions.Get("/activeSchedule", Controllers.GetActiveSchedule)
@@ -55,8 +55,8 @@ func Setup(app *fiber.App) {
 	sessions.Post("/reservedSessions", Controllers.GetReservedSessions)
 	sessions.Post("/changeSessionInstructor", Controllers.ChangeSessionInstructor)
 	sessions.Post("/getFilteredSchedule", Controllers.GetFilteredSchedule)
-	sessions.Post("/setAttendance", Controllers.SetSessionAttendance)           // New!
-	sessions.Get("/attendancePending", Controllers.GetAttendancePendingSession) // New!
+	sessions.Post("/setAttendance", Controllers.SetSessionAttendance)
+	sessions.Get("/attendancePending", Controllers.GetAttendancePendingSession)
 
 	instructor := app.Group("/instructor")
 	instructor.Post("/instructors", Controllers.GetInstructors)
