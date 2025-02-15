@@ -22,7 +22,9 @@ END $$;
 
 -- Then load views
 \i /docker-entrypoint-initdb.d/Views/VW_CompleteUsers.sql
+\i /docker-entrypoint-initdb.d/Views/VW_CompleteSessions.sql
 
 -- Then load functions
 \i /docker-entrypoint-initdb.d/Functions/FN_GetUserByUsername.sql
 \i /docker-entrypoint-initdb.d/Functions/FN_AddServiceToInstructor.sql
+\i /docker-entrypoint-initdb.d/Functions/FN_GetCurrentCalendar.sql

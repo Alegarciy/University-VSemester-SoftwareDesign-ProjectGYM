@@ -44,4 +44,4 @@ BEGIN
     WHERE 
         cs.session_date >= CURRENT_DATE;
 END;
-$$ LANGUAGE plpgsql; 
+$$ LANGUAGE plpgsql;

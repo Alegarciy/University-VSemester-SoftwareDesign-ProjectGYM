@@ -8,16 +8,18 @@ import (
 )
 
 func GetCurrentSessionSchedule() Models.Schedule {
-	query := fmt.Sprintf(`EXEC SP_GetCurrentCalendar;`)
-
-	resultSet, err := Database.ReadTransaction(query)
-
+	db := Database.GetConnection()
+	
+	rows, err := db.Query("SELECT * FROM FN_GetCurrentCalendar()")
+	
 	if err != nil {
+		fmt.Printf("Error querying current schedule: %v\n", err)
 		return Models.Schedule{}
 	}
-
-	schedule := ParseSchedule(resultSet)
-
+	defer rows.Close()
+	
+	schedule := ParseSchedule(rows)
+	
 	return schedule
 }
 

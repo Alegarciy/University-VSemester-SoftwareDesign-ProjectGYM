@@ -48,7 +48,7 @@ func Setup(app *fiber.App) {
 	services.Post("/removeFavoriteService", Controllers.RemoveFavoriteService)
 
 	sessions := app.Group("/sessions")
-	sessions.Get("/activeSchedule", Controllers.GetActiveSchedule)
+	sessions.Get("/activeSchedule", Controllers.GetActiveSchedule) // Updated
 	sessions.Post("/bookSession", Controllers.BookSession)
 	sessions.Post("/cancelBooking", Controllers.CancelBooking)
 	sessions.Post("/cancelSession", Controllers.CancelSession) // No implementar

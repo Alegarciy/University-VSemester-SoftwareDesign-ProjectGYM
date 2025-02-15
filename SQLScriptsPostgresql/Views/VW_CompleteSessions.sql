@@ -3,7 +3,7 @@ SELECT
     session.id AS session_id,
     session.fecha AS session_date,
     session.cancelada AS is_cancelled,
-    session.asistenciataken AS attendance_taken,
+    session.asistenciatomada AS attendance_taken,
     
     preliminary_session.nombre AS name,
     preliminary_session.cupo AS spaces,
@@ -26,7 +26,7 @@ SELECT
     room.id AS room_id,
     room.nombre AS room_name,
 
-    COALESCE(preliminary_session.cupo - r.bookings, preliminary_session.cupo) AS available_spaces
+    COALESCE(preliminary_session.cupo - r.bookings, preliminary_session.cupo)::integer AS available_spaces
 FROM 
     sesion AS session
 INNER JOIN 
@@ -45,6 +45,3 @@ LEFT JOIN (
     WHERE activa = true
     GROUP BY sesionid
 ) AS r ON r.sesionid = session.id;
-
--- Example query:
--- SELECT * FROM complete_sessions; 
